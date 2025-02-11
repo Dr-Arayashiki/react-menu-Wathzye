@@ -2,18 +2,19 @@ const createSubmenuCtx = () => {
   let timer,
     count = 0;
   return {
-    toggle: isOpen => {
+    toggle: (isOpen) => {
       isOpen ? count++ : count--;
       count = Math.max(count, 0);
     },
     on: (closeDelay, pending, settled) => {
       if (count) {
-        if (!timer) timer = setTimeout(() => {
-          timer = 0;
-          pending();
-        }, closeDelay);
+        if (!timer)
+          timer = setTimeout(() => {
+            timer = 0;
+            pending();
+          }, closeDelay);
       } else {
-        settled?.();
+        settled && settled();
       }
     },
     off: () => {
@@ -21,7 +22,7 @@ const createSubmenuCtx = () => {
         clearTimeout(timer);
         timer = 0;
       }
-    }
+    },
   };
 };
 
